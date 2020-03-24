@@ -25,9 +25,20 @@ typedef struct Node
 /*
  *
  */
+Node * new_node (Process p){
+    Node * n = malloc(sizeof(Node));
+    n->data = p;
+    n->next = NULL;
+    return n;
+}
+/*
+ *
+ */
 typedef struct
 {
     /* TODO: ADD YOUR CODE HERE */
+    Node * front;
+    Node * rear;
 } Queue;
 /*
  *
@@ -35,6 +46,9 @@ typedef struct
 Queue* init()
 {
     /* TODO: ADD YOUR CODE HERE */
+    Queue * q = malloc(sizeof(Queue));
+    q ->front = q ->rear = NULL;
+    return q;
 }
 /*
  *
@@ -42,7 +56,8 @@ Queue* init()
 int isEmpty(Queue *q)
 {
     /* TODO: ADD YOUR CODE HERE */
-    return -1;
+    return !(q->front);
+    //return -1;
 }
 /*
  *
@@ -50,6 +65,14 @@ int isEmpty(Queue *q)
 Process dequeue(Queue *q)
 {
     /* TODO: ADD YOUR CODE HERE */
+    Process p ;
+    if (isEmpty(q)){
+        perror("Queue is empty!");
+    } else{
+        p = q->front->data;
+        q->front = q->front->next;
+        return p;
+    }
 }
 /*
  *
@@ -57,6 +80,13 @@ Process dequeue(Queue *q)
 void enqueue(Queue *q, Process val)
 {
     /* TODO: ADD YOUR CODE HERE */
+    Node * n = new_node(val);
+    if (isEmpty(q))
+        q->front = q->rear = n;
+    else{
+        q->rear->next = n;
+        q->rear = n;
+    }
 }
 /*
  *
@@ -64,6 +94,7 @@ void enqueue(Queue *q, Process val)
 void destroy(Queue *q)
 {
     /* TODO: ADD YOUR CODE HERE */
+    
 }
 /*
  * RoundRobin Scheduling
