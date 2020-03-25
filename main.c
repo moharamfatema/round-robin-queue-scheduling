@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <limits.h>
 /*
  * Process: Each process has a name and has an execution time.
  *          We keep track of how long the process still needs
@@ -94,7 +94,53 @@ void enqueue(Queue *q, Process val)
 void destroy(Queue *q)
 {
     /* TODO: ADD YOUR CODE HERE */
-    
+    free(q->front->data.name);
+    free(q->rear->data.name);
+    free(q->front->next);
+    free(q->rear->next);
+    free(q->front);
+    free(q->rear);
+    free(q);
+}
+/*
+ *
+ */
+Process *fetch_data(char *filename,int * time_slot){
+    //TODO: Implement
+    FILE *fp = fopen(filename,"r");
+    if (!fp)
+        perror("File not found.");
+    else{
+
+        /*getting time slot value*/
+        char* line = malloc(LINE_MAX);
+        fgets(line,LINE_MAX/ sizeof(char),fp);
+        while ((line)&&(*line != '='))
+            line++;
+        if (*line == ' ')
+            line++;
+        *time_slot = atoi(line);
+
+        /*getting processes data*/
+        Process *processes = malloc(sizeof(Process)*(*time_slot));
+        int i = 0;
+        char *data;
+        while (fgets(line,LINE_MAX/ sizeof(char),fp)){
+            /*first token*/
+            data = strtok(line," ");
+            processes[i].name = data;
+            /*continue*/
+            data = strtok (NULL, " ");
+            processes[i].starting_time = atoi(data);
+            /*continue*/
+            data = strtok (NULL, " ");
+            processes[i].remaining_time = atoi(data);
+            i++;
+        }
+
+        fclose(fp);
+        return processes;
+    }
 }
 /*
  * RoundRobin Scheduling
@@ -102,6 +148,11 @@ void destroy(Queue *q)
 void RoundRobin(char* filename)
 {
     /* TODO: ADD YOUR CODE HERE */
+    int time_slot = 0;
+    Process *processes = fetch_data(filename,&time_slot);
+    
+
+    free(processes);
 }
 /*
  *
