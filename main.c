@@ -248,6 +248,7 @@ void RoundRobin(char* filename)
     while (clock < time_slot)
         printf("idle (%d-->%d)\n",clock++,clock);
     printf("Stop\n");
+    destroy(robin);
     destroy(q);
 }
 
